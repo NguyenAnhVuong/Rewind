@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RestaurantController;
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,15 +25,35 @@ Route::put('/restaurant/update/{id}', [RestaurantController::class, 'update'])->
 Route::delete('/restaurant/delete/{id}', [RestaurantController::class, 'destroy'])->middleware('auth:sanctum');
 Route::get('/restaurant/details/{id}', [RestaurantController::class, 'getRestaurantDetails']);
 
+/*
+
+[GET] /comments: get all comments
+[POST] /comments: create comment
+[PUT] /comments/{comment}: update comment
+[DELETE] /comments/{comment}: delete comment
+
+*/
 Route::get('/comments', [CommentController::class, 'index']);
 Route::resource('comments', CommentController::class)->except([
     'index', 'create', 'show', 'edit'
 ])->middleware('auth:sanctum');
 
+/*
+
+[PUT] /user/change-password: change password
+[PUT] /user/{id}: change user
+
+*/
+
+Route::put('/user/change-password', [UserController::class, 'changePassword'])->middleware('auth:sanctum');
+Route::put('/user/{id}', [UserController::class, 'update'])->middleware('auth:sanctum');
+
 Route::get('/user/{id}/restaurants', [RestaurantController::class, 'getRestaurantByUserId'])->middleware('auth:sanctum');
 Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginUser']);
 Route::post('/auth/logout', [AuthController::class, 'logoutUser'])->middleware('auth:sanctum');
+
+//upload image
 Route::post('/upload', function (Request $request) {
     $images = array();
     foreach ($request->file('images') as $image) {

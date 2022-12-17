@@ -4,6 +4,13 @@ export interface User {
   email: string;
 }
 
+export interface Comment {
+  id: number;
+  content: string;
+  rating: number;
+  restaurant_id: number;
+}
+
 export interface Review {
   id: number;
   name: string;
@@ -14,4 +21,5 @@ export interface Review {
   user_id: number;
   user: string;
   images: string[];
+  comment: Comment[];
 }

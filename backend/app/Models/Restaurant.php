@@ -17,4 +17,14 @@ class Restaurant extends Model
         'user_id',
         'avatar'
     ];
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function images()
+    {
+        return $this->hasMany(Restaurant_Image::class);
+    }
 }

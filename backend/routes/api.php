@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RestaurantController;
+use App\Http\Controllers\Api\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,12 @@ Route::post('/restaurant/add', [RestaurantController::class, 'store'])->middlewa
 Route::put('/restaurant/update/{id}', [RestaurantController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('/restaurant/delete/{id}', [RestaurantController::class, 'destroy'])->middleware('auth:sanctum');
 Route::get('/restaurant/details/{id}', [RestaurantController::class, 'getRestaurantDetails']);
+
+Route::get('/comments', [CommentController::class, 'index']);
+Route::resource('comments', CommentController::class)->except([
+    'index', 'create', 'show', 'edit'
+])->middleware('auth:sanctum');
+
 Route::get('/user/{id}/restaurants', [RestaurantController::class, 'getRestaurantByUserId'])->middleware('auth:sanctum');
 Route::post('/auth/register', [AuthController::class, 'createUser']);
 Route::post('/auth/login', [AuthController::class, 'loginUser']);

@@ -256,17 +256,13 @@ class RestaurantController extends Controller
     public function getRestaurantDetails($id)
     {
         $restaurant = Restaurant::where('id', $id)->first();
-        $restaurant_images = Restaurant_Image::where('restaurant_id', $id)->get();
-        $images = [];
-        foreach ($restaurant_images as $image) {
-            $images[] = $image->image;
-        }
+        $restaurant->images;
+        $restaurant->comments;
         return response()->json([
             'status' => true,
             'message' => 'Restaurant Fetched Successfully',
             'data' => [
                 'restaurant' => $restaurant,
-                'images' => $images
             ]
         ], 200);
     }

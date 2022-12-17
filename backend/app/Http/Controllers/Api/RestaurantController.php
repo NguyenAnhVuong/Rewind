@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+
+
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use App\Models\Restaurant_Image;
@@ -255,15 +257,47 @@ class RestaurantController extends Controller
 
     public function getRestaurantDetails($id)
     {
-        $restaurant = Restaurant::where('id', $id)->first();
-        $restaurant->images;
-        $restaurant->comments;
-        return response()->json([
-            'status' => true,
-            'message' => 'Restaurant Fetched Successfully',
-            'data' => [
-                'restaurant' => $restaurant,
-            ]
-        ], 200);
+        try {
+            $restaurant = Restaurant::find($id);
+            $restaurant->images;
+            $restaurant->comments;
+            $images = $restaurant->images->map(function ($image) {
+                return $image->image;
+            });
+
+            $sum = 0;
+            foreach ($restaurant->comments as $comment) {
+                $sum += $comment->rating;
+            }
+            $rating = -1;
+            if (count($restaurant->comments) > 0) {
+                $rating = $sum / count($restaurant->comments);
+            }
+            $output = [
+                "id" => $restaurant->id,
+                "name" => $restaurant->name,
+                "address" => $restaurant->address,
+                "phone" => $restaurant->phone,
+                "description" => $restaurant->description,
+                "avatar" => $restaurant->avatar,
+                "user_id" => $restaurant->user_id,
+                "comments" => $restaurant->comments,
+                "images" => $images,
+                "rating" => $rating
+            ];
+            return response()->json([
+                'status' => true,
+                'message' => 'Restaurant Fetched Successfully',
+                'data' => [
+                    'restaurant' => $output,
+                ]
+            ], 200);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
 }

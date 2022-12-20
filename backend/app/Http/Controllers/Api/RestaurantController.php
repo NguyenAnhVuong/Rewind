@@ -273,6 +273,22 @@ class RestaurantController extends Controller
             if (count($restaurant->comments) > 0) {
                 $rating = $sum / count($restaurant->comments);
             }
+
+            $comments = $restaurant->comments->map(function ($comment) {
+                $user = User::find($comment->user_id);
+                return [
+                    "id" => $comment->id,
+                    "comment" => $comment->content,
+                    "rating" => $comment->rating,
+                    "user" => [
+                        "id" => $user->id,
+                        "name" => $user->name,
+                        "email" => $user->email,
+                        "avatar" => $user->avatar,
+                    ]
+                ];
+            });
+
             $output = [
                 "id" => $restaurant->id,
                 "name" => $restaurant->name,
@@ -281,7 +297,7 @@ class RestaurantController extends Controller
                 "description" => $restaurant->description,
                 "avatar" => $restaurant->avatar,
                 "user_id" => $restaurant->user_id,
-                "comments" => $restaurant->comments,
+                "comments" => $comments,
                 "images" => $images,
                 "rating" => $rating
             ];

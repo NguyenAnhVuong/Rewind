@@ -1,0 +1,28 @@
+.modal-style .ant-modal-content,
+.modal-style .ant-modal-header {
+  border-radius: 12px !important;
+}
+
+.modal-style .ant-modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+}
+
+.modal-style .ant-modal-body {
+  display: flex;
+  align-items: center;
+}
+
+.modal-style .ant-modal-body span {
+  font-size: 20px;
+  margin-right: 5px;
+}
+
+.modal-style .ant-modal-footer .ant-btn {
+  border-radius: 12px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #000;
+  border-color: #000;
+}

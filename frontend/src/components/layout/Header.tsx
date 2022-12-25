@@ -22,6 +22,7 @@ const Header = (props: Props) => {
   const [windowSize, setWindowSize] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const userId = useSelector((state: RootState) => state.auth.id);
+  const avatar = useSelector((state: RootState) => state.auth.avatar);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [formLogin, setFormLogin] = useState(true);
   const navigate = useNavigate();
@@ -103,24 +104,24 @@ const Header = (props: Props) => {
         {!!userId && windowSize > 1024 && (
           <div className='flex h-full items-center'>
             <Link
-              className='text-black hover:text-black min-w-fit h-full px-4 flex items-center'
+              className='text-black hover:text-black hover:scale-105 min-w-fit h-full px-4 flex items-center'
               to='/review/add'
             >
               <BiEdit className='w-8 h-8' />
               <span className='ml-1 text-xl'>Viết Review</span>
             </Link>
             <Link
-              className='text-black hover:text-black min-w-fit h-full mx-4 flex items-center'
+              className='text-black hover:text-black hover:scale-105 min-w-fit h-full mx-4 flex items-center'
               to={`/user/${userId}`}
             >
               <IoRestaurantOutline className='w-8 h-8' />
-              <span className='ml-1 text-xl'>Các Nhà Hàng Đã Review</span>
+              <span className='ml-1 text-xl'>Lịch Sử Review</span>
             </Link>
 
             <div className='flex'>
               <Link to='/profile'>
                 <img
-                  src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4ULbkSJGizsSKqowXW0aDlmtWdS-lSf-wdK0E5rQ&s'
+                  src={`/images/${avatar}`}
                   alt='avatar'
                   className='w-10 h-10 rounded-full object-cover'
                 />
@@ -160,7 +161,7 @@ const Header = (props: Props) => {
           <li className='py-2'>
             <Link className='text-black hover:text-black flex' to='/review/add'>
               <BiEdit className='w-5 h-5' />
-              <p className='ml-1'>Viết review</p>
+              <p className='ml-1'>Viết Review</p>
             </Link>
           </li>
           <li className='py-2'>
@@ -169,7 +170,7 @@ const Header = (props: Props) => {
               to={`/user/${userId}`}
             >
               <IoRestaurantOutline className='w-5 h-5' />
-              <p className='ml-1'>Các nhà hàng đã review</p>
+              <p className='ml-1'>Lịch Sử Review</p>
             </Link>
           </li>
           <li className='py-2'>
@@ -178,7 +179,7 @@ const Header = (props: Props) => {
               to='/profile'
             >
               <img
-                src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4ULbkSJGizsSKqowXW0aDlmtWdS-lSf-wdK0E5rQ&s'
+                src={`/images/${avatar}`}
                 alt='avatar'
                 className='w-7 h-7 rounded-full object-cover'
               />

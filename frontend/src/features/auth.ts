@@ -4,7 +4,8 @@ import { User } from "../models";
 const initialState: User = {
   id: 0,
   name: "",
-  email: ""
+  email: "",
+  avatar: ""
 };
 
 const authSlice = createSlice({
@@ -15,11 +16,13 @@ const authSlice = createSlice({
       state.id = action.payload.id;
       state.name = action.payload.name;
       state.email = action.payload.email;
+      state.avatar = action.payload.avatar;
     },
     logout: (state) => {
       state.id = 0;
       state.name = "";
       state.email = "";
+      state.avatar = "";
     }
   }
 });

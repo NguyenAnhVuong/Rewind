@@ -32,6 +32,7 @@ const Login = ({ visible, setFormLogin, setIsModalVisible, handleCancel }: Props
                     id: res.data.user.id,
                     email: res.data.user.email,
                     name: res.data.user.name,
+                    avatar: res.data.user.avatar,
                 }
                 dispatch(authActions.login(user));
                 localStorage.setItem("token", res.data.token);

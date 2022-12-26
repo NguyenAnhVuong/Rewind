@@ -2,13 +2,17 @@ export interface User {
   id: number;
   name: string;
   email: string;
+  avatar?: string;
 }
 
 export interface Comment {
   id: number;
-  content: string;
+  user: User;
+  comment: string;
   rating: number;
   restaurant_id: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Review {
@@ -21,5 +25,4 @@ export interface Review {
   user_id: number;
   user: string;
   images: string[];
-  comment: Comment[];
 }

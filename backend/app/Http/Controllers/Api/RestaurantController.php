@@ -274,12 +274,14 @@ class RestaurantController extends Controller
                 $rating = $sum / count($restaurant->comments);
             }
 
-            $comments = $restaurant->comments->map(function ($comment) {
+            $comments = $restaurant->comments()->orderBy('created_at', 'desc')->get()->map(function ($comment) {
                 $user = User::find($comment->user_id);
                 return [
                     "id" => $comment->id,
                     "comment" => $comment->content,
                     "rating" => $comment->rating,
+                    "created_at" => $comment->created_at,
+                    "updated_at" => $comment->updated_at,
                     "user" => [
                         "id" => $user->id,
                         "name" => $user->name,

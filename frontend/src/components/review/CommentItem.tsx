@@ -5,6 +5,7 @@ import { BiMessageSquareEdit } from 'react-icons/bi'
 import { MdDeleteOutline } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
+import moment from 'moment';
 
 const { TextArea } = Input;
 
@@ -49,7 +50,7 @@ const CommentItem: React.FC<Props> = ({
           <Avatar src={`/images/${avatar}`} size='small' />
           <strong className='ml-2 text-lg'>{name}</strong>
         </div>
-        {(id === user_id && !isEdit) && (
+        {id === user_id && !isEdit && (
           <div className='flex group'>
             <BiMessageSquareEdit
               size={20}
@@ -66,7 +67,15 @@ const CommentItem: React.FC<Props> = ({
       </div>
       <Rate value={rating} disabled style={{ fontSize: '12px' }} />
       <p className='font-medium text-base'>{content}</p>
-      {(id === user_id && isEdit) && (
+      <span className='text-gray-400 text-sm'>
+        {moment(created_at).fromNow()}
+      </span>
+      {updated_at !== created_at && (
+        <span className='text-gray-400 text-xs italic ml-2 mt-1'>
+          Đã chỉnh sửa: {moment(updated_at).calendar()}
+        </span>
+      )}
+      {id === user_id && isEdit && (
         <div className='grid grid-cols-5'>
           <TextArea
             style={{
@@ -83,7 +92,11 @@ const CommentItem: React.FC<Props> = ({
           />
           <div className='col-span-2 flex items-center'>
             <span className='font-bold text-sm'>Đánh giá: </span>
-            <Rate value={editRating} onChange={setEditRating} style={{ fontSize: '14px' }} />
+            <Rate
+              value={editRating}
+              onChange={setEditRating}
+              style={{ fontSize: '14px' }}
+            />
           </div>
           <button
             className={`ml-auto lg:ml-24 h-9 w-[4rem] mt-2 col-start-4 col-span-1 cursor-pointer rounded-xl text-white border-2 bg-[#50514F] hover:bg-[#3D3E3D]`}

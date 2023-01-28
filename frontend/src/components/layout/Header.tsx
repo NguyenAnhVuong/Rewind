@@ -128,13 +128,15 @@ const Header = (props: Props) => {
               </Link>
               <Dropdown
                 overlay={
-                  <Menu>
+                  <Menu
+                    style={{borderRadius: '10px'}}
+                  >
                     <Menu.Item key='0'>
-                      <Link to='/profile'>Thông tin tài khoản</Link>
+                      <Link to='/profile' className='font-semibold'>Thông tin tài khoản</Link>
                     </Menu.Item>
                     <Menu.Item key='1'>
                       <span
-                        className='min-w-fit px-4 cursor-pointer flex'
+                        className='min-w-fit px-4 cursor-pointer flex font-semibold'
                         onClick={handleLogout}
                       >
                         <BiLogOut className='w-5 h-5 mr-1' />

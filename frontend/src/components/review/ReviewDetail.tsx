@@ -91,8 +91,12 @@ const ReviewDetail = (props: Props) => {
             updated_at: data.data.updated_at,
             restaurant_id: id,
           };
-          dataRestaurant.comments.push(newComment);
-          dataRestaurant.comments.length++;
+          dataRestaurant.comments.unshift(newComment);
+          if (dataRestaurant.comments.length === 1) {
+            dataRestaurant.rating = rating;
+          } else {
+            dataRestaurant.rating = (dataRestaurant.rating * dataRestaurant.comments.length + rating) / (dataRestaurant.comments.length + 1);
+          }
           setDataComment(paginate(dataRestaurant.comments));
           setComment('');
           setRating(0);
@@ -154,6 +158,7 @@ const ReviewDetail = (props: Props) => {
       if (data.status && dataRestaurant) {
         const comment = dataRestaurant.comments.find((comment) => comment.id === idComment);
         if (comment) {
+          dataRestaurant.rating = (dataRestaurant.rating * dataRestaurant.comments.length - comment.rating + rating) / dataRestaurant.comments.length;
           comment.comment = content;
           comment.rating = rating;
           setDataComment(paginate(dataRestaurant.comments));
@@ -175,7 +180,7 @@ const ReviewDetail = (props: Props) => {
           if (data.status && dataRestaurant) {
             const indexComment = dataRestaurant.comments.findIndex((comment) => comment.id === id);
             dataRestaurant.comments.splice(indexComment, 1);
-            dataRestaurant.comments.length--;
+            dataRestaurant.rating = (dataRestaurant.rating * (dataRestaurant.comments.length + 1) - rating) / dataRestaurant.comments.length;
             setDataComment(paginate(dataRestaurant.comments));
             openNotification('success', 'Xóa bình luận thành công');
           }
@@ -198,6 +203,7 @@ const ReviewDetail = (props: Props) => {
               return (
                 <div
                   className='lg:relative lg:pt-[56.25%] lg:w-full'
+                  key={index}
                   onClick={() => goToSlide(index)}
                 >
                   <img
@@ -219,7 +225,7 @@ const ReviewDetail = (props: Props) => {
             >
               {images.map((image, index) => {
                 return (
-                  <div className='max-h-[329.0625px]'>
+                  <div className='max-h-[329.0625px]' key={index}>
                     <Image
                       className='lg:rounded-lg lg:overflow-hidden'
                       preview={{ visible: false }}
@@ -251,7 +257,7 @@ const ReviewDetail = (props: Props) => {
                       commentId={comment.id}
                       handleDeleteComment={handleDeleteComment}
                       handleEditComment={handleEditComment}
-                      key={'comment' + comment.id}
+                      key={index}
                     />
                   );
                 })}
@@ -317,12 +323,12 @@ const ReviewDetail = (props: Props) => {
         <div className='lg:col-span-4 p-4 text-base font-medium lg:flex lg:flex-col lg:justify-between'>
           <div>
             <h2 className='text-2xl font-bold uppercase'>{review?.name}</h2>
-            <strong>
-              Ratting:{' '}
-              {dataRestaurant?.rating ? (
-                <Rate allowHalf defaultValue={dataRestaurant.rating} disabled />
+            <strong className='flex items-center'>
+              Rating:{' '}
+              {dataRestaurant!?.comments.length > 0 ? (
+                <Rate allowHalf value={dataRestaurant!.rating} disabled />
               ) : (
-                <p>Chưa có đánh giá</p>
+                <p className='ml-1'>Chưa có đánh giá</p>
               )}
             </strong>
             <p>Địa chỉ: {review?.address}</p>

@@ -135,7 +135,8 @@ class UserController extends Controller
     {
         try {
             $validateUser = Validator::make($request->all(), [
-                'password' => 'required'
+                'oldPassword' => 'required',
+                'newPassword' => 'required'
             ]);
 
             if ($validateUser->fails()) {
@@ -147,7 +148,15 @@ class UserController extends Controller
             }
 
             $user = User::find(Auth::id());
-            $user->password = Hash::make($request->password);
+
+            $checkPassword = Hash::check($request->oldPassword, $user->password);
+            if(!$checkPassword) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Old Password incorrect',
+                ], 401);
+            }
+            $user->password = Hash::make($request->newPassword);
             $user->update($user->toArray());
             return response()->json([
                 'status' => true,

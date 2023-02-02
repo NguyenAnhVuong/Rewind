@@ -53,12 +53,12 @@ const CommentItem: React.FC<Props> = ({
         {id === user_id && !isEdit && (
           <div className='flex group'>
             <BiMessageSquareEdit
-              size={20}
-              className={`cursor-pointer hover:text-[#43B929]`}
+              size={24}
+              className={`cursor-pointer hover:text-[#43B929] mr-1`}
               onClick={() => setIsEdit(true)}
             />
             <MdDeleteOutline
-              size={20}
+              size={24}
               className={`cursor-pointer hover:text-[#D80032]`}
               onClick={() => handleDeleteComment(commentId)}
             />
@@ -78,6 +78,7 @@ const CommentItem: React.FC<Props> = ({
       {id === user_id && isEdit && (
         <div className='grid grid-cols-5'>
           <TextArea
+            maxLength={200}
             style={{
               height: 50,
               resize: 'none',

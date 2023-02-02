@@ -87,10 +87,10 @@ const Header = (props: Props) => {
           {!userId && (
             <>
               <div className='px-2'>
-                <FiUsers size={30} />
+                <FiUsers size={25} />
               </div>
               <span
-                className='text-xl'
+                className='text-lg'
                 onClick={() => {
                   showModal();
                   setFormLogin(true);
@@ -107,15 +107,15 @@ const Header = (props: Props) => {
               className='text-black hover:text-black hover:scale-105 min-w-fit h-full px-4 flex items-center'
               to='/review/add'
             >
-              <BiEdit className='w-8 h-8' />
-              <span className='ml-1 text-xl'>Viết Review</span>
+              <BiEdit size={24} />
+              <span className='ml-1 text-base'>Viết Review</span>
             </Link>
             <Link
               className='text-black hover:text-black hover:scale-105 min-w-fit h-full mx-4 flex items-center'
               to={`/user/${userId}`}
             >
-              <IoRestaurantOutline className='w-8 h-8' />
-              <span className='ml-1 text-xl'>Lịch Sử Review</span>
+              <IoRestaurantOutline size={24} />
+              <span className='ml-1 text-base'>Lịch Sử Review</span>
             </Link>
 
             <div className='flex'>
@@ -127,19 +127,19 @@ const Header = (props: Props) => {
                 />
               </Link>
               <Dropdown
+                placement='bottomRight'
                 overlay={
                   <Menu
-                    style={{borderRadius: '10px'}}
+                    style={{borderRadius: '8px', marginTop: '8px'}}
                   >
                     <Menu.Item key='0'>
                       <Link to='/profile' className='font-semibold'>Thông tin tài khoản</Link>
                     </Menu.Item>
                     <Menu.Item key='1'>
                       <span
-                        className='min-w-fit px-4 cursor-pointer flex font-semibold'
+                        className='min-w-fit cursor-pointer flex font-semibold'
                         onClick={handleLogout}
                       >
-                        <BiLogOut className='w-5 h-5 mr-1' />
                         Đăng xuất
                       </span>
                     </Menu.Item>
@@ -151,7 +151,7 @@ const Header = (props: Props) => {
                   className='ant-dropdown-link'
                   onClick={(e) => e.preventDefault()}
                 >
-                  <AiFillCaretDown className='w-5 h-5' />
+                  <AiFillCaretDown size={20} />
                 </button>
               </Dropdown>
             </div>
@@ -162,7 +162,7 @@ const Header = (props: Props) => {
         <ul className='absolute top-[4.5rem] left-0 w-full bg-white px-4'>
           <li className='py-2'>
             <Link className='text-black hover:text-black flex' to='/review/add'>
-              <BiEdit className='w-5 h-5' />
+              <BiEdit size={20} />
               <p className='ml-1'>Viết Review</p>
             </Link>
           </li>
@@ -171,7 +171,7 @@ const Header = (props: Props) => {
               className='text-black hover:text-black flex'
               to={`/user/${userId}`}
             >
-              <IoRestaurantOutline className='w-5 h-5' />
+              <IoRestaurantOutline size={20} />
               <p className='ml-1'>Lịch Sử Review</p>
             </Link>
           </li>
@@ -192,7 +192,7 @@ const Header = (props: Props) => {
             className='py-2 text-black cursor-pointer flex items-center'
             onClick={handleLogout}
           >
-            <BiLogOut className='w-5 h-5' />
+            <BiLogOut size={20} />
             <span className='ml-1'>Đăng xuất</span>
           </li>
         </ul>

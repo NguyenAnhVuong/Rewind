@@ -2,28 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../app/store';
 import axiosClient from '../axiosClient';
-import { notification, Avatar } from 'antd';
+import { notification, Avatar, Input } from 'antd';
 import { MdPhotoCamera } from 'react-icons/md';
 import { AxiosError } from 'axios';
 import { authActions } from '../features/auth';
 
 const initialState = {
   name: '',
-  password: '',
+  oldPassword: '',
+  newPassword: '',
   confirmPassword: '',
 };
 
 const Profile = () => {
 
   const auth = useSelector((state: RootState) => state.auth);
-  const reviews = useSelector((state: RootState) => state.review.reviews);
   const dispatch = useDispatch();
 
   const [editUser, setEditUser] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [avatar, setAvatar] = useState<null | string>("default_avatar.png");
 
-  const { name, password, confirmPassword } = editUser;
+  const { name, oldPassword, newPassword, confirmPassword } = editUser;
 
   useEffect(() => {
     const getUser = async () => {
@@ -80,8 +80,8 @@ const Profile = () => {
     }
     
     try {
-      await axiosClient.put(`/api/user/${auth.id}`, { name, avatar });
-      openNotification('success', 'Update Success !');
+      const { data } = await axiosClient.put(`/api/user/${auth.id}`, { name, avatar });
+      dispatch(authActions.update({name: data.data.name, avatar: data.data.avatar}))
     } catch (error) {
       const err = error as AxiosError;
       const data: any = err.response?.data;
@@ -91,30 +91,29 @@ const Profile = () => {
   }
 
   const updatePassword = async () => {
-    if (password !== confirmPassword) {
+    if (newPassword !== confirmPassword) {
       openNotification('error', 'Password did not match.');
       return setEditUser({...editUser})
     }
-
     try {
-      await axiosClient.put(`/api/user/change-password`, { password });
-      openNotification('success', 'Update Success !');
+      await axiosClient.put(`/api/user/change-password`, {
+        oldPassword,
+        newPassword,
+      });
+      openNotification('success', 'Update Password Success !');
     } catch (error) {
       const err = error as AxiosError;
       const data: any = err.response?.data;
       data?.message &&
         openNotification('error', data?.message);
-    }
+      }
   }
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password) updatePassword();
+    if (newPassword) updatePassword();
     updateInformation();
-    setTimeout(() => {
-      dispatch(authActions.login({id: auth.id, name, email: auth.email}));
-      setEditUser({ ...editUser, password: '', confirmPassword: '' });
-    }, 3000);
+    setEditUser({ ...editUser, oldPassword: '', newPassword: '', confirmPassword: '' });
   }
 
   const openNotification = (type: 'success' | 'error', message: string) => {
@@ -157,10 +156,6 @@ const Profile = () => {
             <h3 className='font-bold text-base'>
               Email: <strong className='text-green-600'>{auth.email}</strong>
             </h3>
-            <h3 className='font-bold text-base'>
-              Reviews:{' '}
-              <strong className='text-green-600'>{reviews.length}</strong>
-            </h3>
           </div>
         </div>
 
@@ -177,18 +172,29 @@ const Profile = () => {
           </div>
 
           <div className='mt-6'>
-            <input
+            <Input.Password
               className='border border-black p-2 w-full rounded-md'
               type='password'
-              name='password'
-              placeholder='New Password'
-              value={password}
+              name='oldPassword'
+              placeholder='Old Password'
+              value={oldPassword}
               onChange={handleChangeInput}
             />
           </div>
 
           <div className='mt-6'>
-            <input
+            <Input.Password
+              className='border border-black p-2 w-full rounded-md'
+              type='password'
+              name='newPassword'
+              placeholder='New Password'
+              value={newPassword}
+              onChange={handleChangeInput}
+            />
+          </div>
+
+          <div className='mt-6'>
+            <Input.Password
               className='border border-black p-2 w-full rounded-md'
               type='password'
               name='confirmPassword'
@@ -203,11 +209,6 @@ const Profile = () => {
               className='mt-4 w-full bg-[#3BACB6] text-white p-2 rounded-3xl font-bold hover:bg-opacity-90 disabled:bg-slate-400'
               type='button'
               onClick={handleUpdate}
-              disabled={
-                loading ||
-                !name ||
-                (name === auth.name && !password && !avatar)
-              }
             >
               Lưu Thay Đổi
             </button>

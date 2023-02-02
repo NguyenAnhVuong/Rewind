@@ -262,12 +262,14 @@ const ReviewDetail = (props: Props) => {
                   );
                 })}
                 <div className='my-5'>
-                  <Pagination
-                    onChange={setCurrentPage}
-                    defaultCurrent={1}
-                    total={dataRestaurant.comments.length}
-                    defaultPageSize={5}
-                  />
+                  {dataRestaurant.comments.length > 5 && (
+                    <Pagination
+                      onChange={setCurrentPage}
+                      defaultCurrent={1}
+                      total={dataRestaurant.comments.length}
+                      defaultPageSize={5}
+                    />
+                  )}
                 </div>
               </>
             ) : (
@@ -294,6 +296,7 @@ const ReviewDetail = (props: Props) => {
                   className='col-span-5'
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
+                  maxLength={200}
                 />
                 {rating !== 0 && (
                   <div className='mt-5 col-span-2'>
@@ -328,7 +331,7 @@ const ReviewDetail = (props: Props) => {
               {dataRestaurant!?.comments.length > 0 ? (
                 <Rate allowHalf value={dataRestaurant!.rating} disabled />
               ) : (
-                <p className='ml-1'>Chưa có đánh giá</p>
+                <p className='ml-1 my-0'>Chưa có đánh giá</p>
               )}
             </strong>
             <p>Địa chỉ: {review?.address}</p>

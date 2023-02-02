@@ -23,7 +23,11 @@ const authSlice = createSlice({
       state.name = "";
       state.email = "";
       state.avatar = "";
-    }
+    },
+    update: (state, action) => {
+      state.name = action.payload.name;
+      state.avatar = action.payload.avatar;
+    },
   }
 });
 

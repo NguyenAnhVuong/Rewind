@@ -1,4 +1,4 @@
-import { Modal } from 'antd'
+import { Input, Modal } from 'antd'
 import axios from 'axios'
 import React, { MouseEvent, useState } from 'react'
 import { useDispatch } from 'react-redux';
@@ -46,8 +46,8 @@ const Login = ({ visible, setFormLogin, setIsModalVisible, handleCancel }: Props
     return (
         <Modal title="Đăng nhập" visible={visible} footer={null} onCancel={handleCancel}>
             <form className='flex flex-col text-base'>
-                <input className='border border-black h-10 p-2 mb-4 rounded-sm outline-none' type="text" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
-                <input className='border border-black h-10 p-2 mb-4 rounded-sm outline-none' type="password" placeholder='Mật khẩu' onChange={(e) => setPassword(e.target.value)} />
+                <Input className='border border-black h-10 p-2 mb-4 rounded-sm outline-none' type="text" placeholder='Email' onChange={(e) => setEmail(e.target.value)} />
+                <Input.Password className='border border-black h-10 p-2 mb-4 rounded-sm outline-none' placeholder='Mật khẩu' onChange={(e) => setPassword(e.target.value)} />
                 <span className='text-red-600 font-medium'>{err}</span>
                 <button className='mt-4 w-full bg-[#14C38E] text-white p-2 rounded-3xl' type='submit' onClick={(e) => handleLogin(e)}>Đăng nhập</button>
                 <div className='text-center mt-4'>

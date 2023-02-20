@@ -281,7 +281,7 @@ const ReviewDetail = (props: Props) => {
             )}
             {dataRestaurant?.comments.findIndex(
               (comment) => comment.user.id === user.id
-            ) === -1 && (
+            ) === -1 && user.id !== 0 && (
               <div className='grid grid-cols-5'>
                 <TextArea
                   style={{
